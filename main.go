@@ -12,11 +12,11 @@ import (
 func main() {
 	r := gin.Default()
 
+	v1 := r.Group("v1")
 	// basic routes
-	r.GET("/hello", handleHelloRoute)
-	r.GET("/hello/:id", handleDetailRoute)
-
-	r.POST("/hello", handlePostHello)
+	v1.GET("/hello", handleHelloRoute)
+	v1.GET("/hello/:id", handleDetailRoute)
+	v1.POST("/hello", handlePostHello)
 
 	r.Run() // run on port 8080
 }
