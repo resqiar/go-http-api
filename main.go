@@ -1,12 +1,24 @@
 package main
 
 import (
+	"fmt"
 	"http-api/handler"
+	"log"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func main() {
+	dsn := "host=localhost user=postgres password=admin dbname=exampledb port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	_, dbErr := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if dbErr != nil {
+		log.Fatal(dbErr)
+	} else {
+		fmt.Println("...Postgres connected...")
+	}
+
 	r := gin.Default()
 
 	v1 := r.Group("v1")
