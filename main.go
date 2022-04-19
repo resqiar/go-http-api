@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 func main() {
@@ -59,8 +61,8 @@ func handleDetailRoute(c *gin.Context) {
 }
 
 type PostHello struct {
-	Id    string
-	Title string
+	Id    string `json:"id" binding:"required"`
+	Title string `json:"title" binding:"required"`
 }
 
 func handlePostHello(c *gin.Context) {
@@ -68,7 +70,11 @@ func handlePostHello(c *gin.Context) {
 	err := c.ShouldBindJSON(&body)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		errorMessage := []string{}
+		for _, e := range err.(validator.ValidationErrors) {
+			errorMessage = append(errorMessage, fmt.Sprintf("Error on field %s, reason %s", e.Field(), e.ActualTag()))
+		}
+		c.JSON(http.StatusBadRequest, gin.H{"code": http.StatusBadRequest, "message": errorMessage})
 		return
 	}
 
