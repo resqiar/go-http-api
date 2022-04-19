@@ -1,6 +1,10 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	r := gin.Default()
@@ -12,5 +16,5 @@ func main() {
 }
 
 func handleHelloRoute(c *gin.Context) {
-	c.JSON(200, gin.H{"message": "Hello There!"})
+	c.JSON(http.StatusOK, gin.H{"message": "Hello There!"})
 }
