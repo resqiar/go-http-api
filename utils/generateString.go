@@ -1,11 +1,11 @@
-package main
+package utils
 
 import (
 	"crypto/rand"
 	"unsafe"
 )
 
-func generateRandomString(size int) string {
+func GenerateRandomString(size int) string {
 	alpha := []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 	b := make([]byte, size)
