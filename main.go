@@ -1,7 +1,6 @@
 package main
 
 import (
-	"http-api/entities"
 	"http-api/tasks"
 	"http-api/users"
 	"log"
@@ -22,7 +21,7 @@ func main() {
 		log.Fatal(dbErr)
 	}
 	// auto migrate (must be off when on prod)
-	db.AutoMigrate(&entities.User{}, &tasks.Task{}, &users.User{})
+	db.AutoMigrate(&tasks.Task{}, &users.User{})
 
 	// init router
 	r := gin.Default()
