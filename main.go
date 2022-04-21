@@ -2,8 +2,8 @@ package main
 
 import (
 	"http-api/entities"
-	"http-api/handler"
 	"http-api/tasks"
+	"http-api/users"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -22,16 +22,20 @@ func main() {
 		log.Fatal(dbErr)
 	}
 	// auto migrate (must be off when on prod)
-	db.AutoMigrate(&entities.User{}, &tasks.Task{})
+	db.AutoMigrate(&entities.User{}, &tasks.Task{}, &users.User{})
 
 	// init router
 	r := gin.Default()
 
 	v1 := r.Group("v1")
-	// basic routes
-	v1.GET("/hello", handler.HandleHelloRoute)
-	v1.GET("/hello/:id", handler.HandleDetailRoute)
-	v1.POST("/hello", handler.HandlePostHello)
+
+	// USER ROUTES
+	userRep := users.UserRepository(db)
+	userService := users.UserService(userRep)
+	userCtrl := users.UserCtrl(userService)
+
+	v1.GET("/users", userCtrl.HandleReadUsers)
+	v1.POST("/user/create", userCtrl.HandleCreateUser)
 
 	// TASK ROUTES
 	taskRep := tasks.TaskRepository(db)
