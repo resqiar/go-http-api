@@ -9,12 +9,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func main() {
 	// init db
 	dsn := "host=localhost user=postgres password=admin dbname=db1 port=5432 sslmode=disable TimeZone=Asia/Shanghai"
-	db, dbErr := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, dbErr := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
 	if dbErr != nil {
 		log.Fatal(dbErr)
 	}
