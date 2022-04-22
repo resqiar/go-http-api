@@ -9,6 +9,7 @@ type Task struct {
 	Task      string `gorm:"type:varchar(100);not null"`
 	Desc      string
 	IsDone    *bool `gorm:"default:false"`
+	AuthorID  int64
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

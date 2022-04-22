@@ -23,7 +23,7 @@ func main() {
 	// env variables but for now it is OK.
 	dsn := "host=localhost user=postgres password=admin dbname=db1 port=5432 sslmode=disable TimeZone=Asia/Shanghai"
 	db, dbErr := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
+		Logger: logger.Default.LogMode(logger.Error),
 	})
 	if dbErr != nil {
 		log.Fatal(dbErr)
@@ -31,7 +31,7 @@ func main() {
 
 	// Auto migration by Gorm.
 	// Must be off when it comes to production.
-	db.AutoMigrate(&tasks.Task{}, &users.User{})
+	db.AutoMigrate(&users.User{}, &tasks.Task{})
 
 	// Initialize gin engine
 	// call it "r" as router.
@@ -63,11 +63,11 @@ func main() {
 	authRoutes.POST("/register", loginCtrl.Register)
 
 	// User routes
-	v1.GET("/users", guards.JWTGuard(), userCtrl.HandleReadUsers)
+	v1.GET("/users", userCtrl.HandleReadUsers)
 
 	// Task routes
 	v1.GET("/tasks", taskCtrl.HandleReadTask)
-	v1.POST("/task/create", taskCtrl.HandleCreateTask)
+	v1.POST("/task/create", guards.JWTGuard(), taskCtrl.HandleCreateTask)
 
 	r.Run() // run on port 8080 by default
 }

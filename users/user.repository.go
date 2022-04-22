@@ -18,12 +18,16 @@ func UserRepository(db *gorm.DB) *repository {
 
 func (rep *repository) FindAll() ([]User, error) {
 	var result []User
-	err := rep.db.Find(&result).Error
+
+	// Find all users with its relations ("Tasks")
+	err := rep.db.Preload("Tasks").Find(&result).Error
 	return result, err
 }
 
 func (rep *repository) FindByEmail(email string) (User, error) {
 	var result User
+
+	// Find the first match user by email.
 	err := rep.db.First(&result, User{
 		Email: email,
 	}).Error
@@ -31,6 +35,7 @@ func (rep *repository) FindByEmail(email string) (User, error) {
 }
 
 func (repo *repository) Create(user User) error {
-	err := repo.db.Create(&user).Error
+	// Create and save to DB
+	err := repo.db.Create(&user).Save(&user).Error
 	return err
 }

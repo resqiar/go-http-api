@@ -19,6 +19,8 @@ func TaskController(taskService IService) *taskController {
 
 func (ctrl *taskController) HandleReadTask(c *gin.Context) {
 	startTime := time.Now()
+
+	// Call tasks service to retrieve all tasks
 	result, err := ctrl.taskService.FindAll()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -38,8 +40,10 @@ func (ctrl *taskController) HandleReadTask(c *gin.Context) {
 func (ctrl *taskController) HandleCreateTask(c *gin.Context) {
 	startTime := time.Now()
 
+	// Task Input DTO
 	var taskInput TaskInput
 
+	// Validate user input (DTO)
 	bodyErr := c.ShouldBindJSON(&taskInput)
 	if bodyErr != nil {
 		errorMessage := []string{}
@@ -50,14 +54,18 @@ func (ctrl *taskController) HandleCreateTask(c *gin.Context) {
 		return
 	}
 
-	result, resultErr := ctrl.taskService.Create(taskInput)
+	// Get author id from JWT Guard context
+	authorId, _ := c.Get("user_id")
+
+	// Call tasks service to create user obj
+	resultErr := ctrl.taskService.Create(taskInput, int64(authorId.(float64)))
 	if resultErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"code": http.StatusBadRequest, "message": resultErr.Error()})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"status":      http.StatusOK,
-		"data":        result,
 		"timestamp":   time.Now(),
 		"response_ms": time.Now().UnixMilli() - startTime.UnixMilli(),
 	})

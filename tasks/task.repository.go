@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type ITaskRepository interface {
 	FindAll() ([]Task, error)
-	Create(task Task) (int, error)
+	Create(task Task) error
 }
 
 type repository struct {
@@ -21,7 +21,7 @@ func (rep *repository) FindAll() ([]Task, error) {
 	return result, err
 }
 
-func (rep *repository) Create(task Task) (int, error) {
-	err := rep.db.Create(&task).Error
-	return 200, err
+func (rep *repository) Create(task Task) error {
+	err := rep.db.Create(&task).Save(&task).Error
+	return err
 }

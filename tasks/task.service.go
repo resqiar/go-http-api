@@ -2,7 +2,7 @@ package tasks
 
 type IService interface {
 	FindAll() ([]Task, error)
-	Create(taskInput TaskInput) (int, error)
+	Create(taskInput TaskInput, authorId int64) error
 }
 
 type service struct {
@@ -14,6 +14,7 @@ func TaskService(rep ITaskRepository) *service {
 }
 
 func (s *service) FindAll() ([]Task, error) {
+	// Call users service to retrieve all tasks
 	result, err := s.repository.FindAll()
 	if err != nil {
 		return nil, err
@@ -21,12 +22,16 @@ func (s *service) FindAll() ([]Task, error) {
 	return result, err
 }
 
-func (s *service) Create(taskInput TaskInput) (int, error) {
+func (s *service) Create(taskInput TaskInput, authorId int64) error {
+	// Bind task input (DTO) into Task obj
 	t := Task{
-		Task:   taskInput.Task,
-		Desc:   taskInput.Desc,
-		IsDone: taskInput.IsDone,
+		Task:     taskInput.Task,
+		Desc:     taskInput.Desc,
+		IsDone:   taskInput.IsDone,
+		AuthorID: authorId,
 	}
-	result, err := s.repository.Create(t)
-	return result, err
+
+	// Call task repository to create a new user and save them to database.
+	err := s.repository.Create(t)
+	return err
 }
