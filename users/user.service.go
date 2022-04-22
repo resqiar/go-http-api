@@ -1,10 +1,8 @@
 package users
 
-import "golang.org/x/crypto/bcrypt"
-
 type IUserService interface {
 	FindAll() ([]User, error)
-	Create(userInput UserInput) (int, error)
+	FindByEmail(email string) (User, error)
 }
 
 type service struct {
@@ -23,17 +21,8 @@ func (s *service) FindAll() ([]User, error) {
 	return result, err
 }
 
-func (s *service) Create(userInput UserInput) (int, error) {
-	pwHash, err := bcrypt.GenerateFromPassword([]byte(userInput.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return 400, err
-	}
-	u := User{
-		Username: userInput.Username,
-		Email:    userInput.Email,
-		Password: string(pwHash),
-		Bio:      userInput.Bio,
-	}
-	result, err := s.repo.Create(u)
+func (s *service) FindByEmail(email string) (User, error) {
+	// Call user service to find user based on email
+	result, err := s.repo.FindByEmail(email)
 	return result, err
 }
