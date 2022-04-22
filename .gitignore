@@ -19,3 +19,6 @@ tmp
 
 # air binary 
 air
+
+# env
+.env
