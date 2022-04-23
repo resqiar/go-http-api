@@ -5,6 +5,7 @@ import "gorm.io/gorm"
 type IUserRepository interface {
 	FindAll() ([]User, error)
 	FindByEmail(email string) (User, error)
+	FindByUsername(username string) (SafeUser, error)
 	Create(user User) error
 }
 
@@ -31,6 +32,19 @@ func (rep *repository) FindByEmail(email string) (User, error) {
 	err := rep.db.First(&result, User{
 		Email: email,
 	}).Error
+	return result, err
+}
+
+func (rep *repository) FindByUsername(username string) (SafeUser, error) {
+	var result SafeUser
+
+	// Find the first match user by username.
+	// Omit the password as it is used as a public endpoint.
+	// Smart query := https://gorm.io/docs/advanced_query.html#Smart-Select-Fields
+	err := rep.db.Model(&User{}).Preload("Tasks").First(&result, User{
+		Username: username,
+	}).Error
+
 	return result, err
 }
 

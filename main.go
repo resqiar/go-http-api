@@ -64,6 +64,7 @@ func main() {
 
 	// User routes
 	v1.GET("/users", userCtrl.HandleReadUsers)
+	v1.GET("/user/:username", userCtrl.HandleFindUserByUsername)
 
 	// Task routes
 	v1.GET("/tasks", taskCtrl.HandleReadTask)
