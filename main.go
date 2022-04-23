@@ -56,6 +56,9 @@ func main() {
 	questionRep := questions.QuestionRepository(db)
 	questionService := questions.QuestionService(questionRep)
 	questionCtrl := questions.QuestionController(questionService)
+	answerRep := answers.AnswerRepository(db)
+	answerService := answers.AnswerService(answerRep)
+	answerCtrl := answers.AnswerController(answerService)
 
 	// Group routes specifically for authentication
 	// endpoint of the routes will be "v1/auth/..."
@@ -70,6 +73,10 @@ func main() {
 	// Question routes
 	v1.GET("/questions", questionCtrl.HandleReadQuestion)
 	v1.POST("/question/create", guards.JWTGuard(), questionCtrl.HandleCreateQuestion)
+
+	// Answer routes
+	v1.GET("/answers", answerCtrl.HandleReadAnswers)
+	v1.POST("/answer/create", guards.JWTGuard(), answerCtrl.HandleCreateAnswer)
 
 	r.Run() // run on port 8080 by default
 }
