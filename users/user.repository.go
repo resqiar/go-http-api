@@ -20,8 +20,8 @@ func UserRepository(db *gorm.DB) *repository {
 func (rep *repository) FindAll() ([]User, error) {
 	var result []User
 
-	// Find all users with its relations ("Tasks")
-	err := rep.db.Preload("Tasks").Find(&result).Error
+	// Find all users with its relations ("Questions")
+	err := rep.db.Preload("Questions").Find(&result).Error
 	return result, err
 }
 

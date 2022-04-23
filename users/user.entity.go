@@ -1,7 +1,7 @@
 package users
 
 import (
-	"http-api/tasks"
+	"http-api/questions"
 	"time"
 )
 
@@ -11,7 +11,7 @@ type User struct {
 	Email     string `gorm:"type:varchar(100); unique; not null"`
 	Password  string `gorm:"not null"`
 	Bio       string
-	Tasks     []tasks.Task `gorm:"foreignKey:AuthorID"`
+	Questions []questions.Question `gorm:"foreignKey:AuthorID"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

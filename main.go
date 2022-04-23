@@ -3,7 +3,7 @@ package main
 import (
 	"http-api/auth"
 	"http-api/guards"
-	"http-api/tasks"
+	"http-api/questions"
 	"http-api/users"
 	"log"
 
@@ -31,7 +31,7 @@ func main() {
 
 	// Auto migration by Gorm.
 	// Must be off when it comes to production.
-	db.AutoMigrate(&users.User{}, &tasks.Task{})
+	db.AutoMigrate(&users.User{}, &questions.Question{})
 
 	// Initialize gin engine
 	// call it "r" as router.
@@ -52,9 +52,9 @@ func main() {
 	userCtrl := users.UserCtrl(userService)
 	loginService := auth.LoginService(userService, userRep)
 	loginCtrl := auth.LoginController(loginService, userService)
-	taskRep := tasks.TaskRepository(db)
-	taskService := tasks.TaskService(taskRep)
-	taskCtrl := tasks.TaskController(taskService)
+	questionRep := questions.QuestionRepository(db)
+	questionService := questions.QuestionService(questionRep)
+	questionCtrl := questions.QuestionController(questionService)
 
 	// Group routes specifically for authentication
 	// endpoint of the routes will be "v1/auth/..."
@@ -66,9 +66,9 @@ func main() {
 	v1.GET("/users", userCtrl.HandleReadUsers)
 	v1.GET("/user/:username", userCtrl.HandleFindUserByUsername)
 
-	// Task routes
-	v1.GET("/tasks", taskCtrl.HandleReadTask)
-	v1.POST("/task/create", guards.JWTGuard(), taskCtrl.HandleCreateTask)
+	// Question routes
+	v1.GET("/questions", questionCtrl.HandleReadQuestion)
+	v1.POST("/question/create", guards.JWTGuard(), questionCtrl.HandleCreateQuestion)
 
 	r.Run() // run on port 8080 by default
 }

@@ -1,4 +1,4 @@
-package tasks
+package questions
 
 import (
 	"fmt"
@@ -9,19 +9,19 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-type taskController struct {
-	taskService IService
+type questionController struct {
+	questionService IService
 }
 
-func TaskController(taskService IService) *taskController {
-	return &taskController{taskService}
+func QuestionController(questionService IService) *questionController {
+	return &questionController{questionService}
 }
 
-func (ctrl *taskController) HandleReadTask(c *gin.Context) {
+func (ctrl *questionController) HandleReadQuestion(c *gin.Context) {
 	startTime := time.Now()
 
-	// Call tasks service to retrieve all tasks
-	result, err := ctrl.taskService.FindAll()
+	// Call questions service to retrieve all questions
+	result, err := ctrl.questionService.FindAll()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
@@ -37,14 +37,14 @@ func (ctrl *taskController) HandleReadTask(c *gin.Context) {
 	})
 }
 
-func (ctrl *taskController) HandleCreateTask(c *gin.Context) {
+func (ctrl *questionController) HandleCreateQuestion(c *gin.Context) {
 	startTime := time.Now()
 
-	// Task Input DTO
-	var taskInput TaskInput
+	// Question Input DTO
+	var questionInput QuestionInput
 
 	// Validate user input (DTO)
-	bodyErr := c.ShouldBindJSON(&taskInput)
+	bodyErr := c.ShouldBindJSON(&questionInput)
 	if bodyErr != nil {
 		errorMessage := []string{}
 		for _, e := range bodyErr.(validator.ValidationErrors) {
@@ -57,8 +57,8 @@ func (ctrl *taskController) HandleCreateTask(c *gin.Context) {
 	// Get author id from JWT Guard context
 	authorId, _ := c.Get("user_id")
 
-	// Call tasks service to create user obj
-	resultErr := ctrl.taskService.Create(taskInput, int64(authorId.(float64)))
+	// Call questions service to create user obj
+	resultErr := ctrl.questionService.Create(questionInput, int64(authorId.(float64)))
 	if resultErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"code": http.StatusBadRequest, "message": resultErr.Error()})
 		return
