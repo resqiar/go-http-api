@@ -1,6 +1,7 @@
 package main
 
 import (
+	"http-api/answers"
 	"http-api/auth"
 	"http-api/guards"
 	"http-api/questions"
@@ -31,7 +32,7 @@ func main() {
 
 	// Auto migration by Gorm.
 	// Must be off when it comes to production.
-	db.AutoMigrate(&users.User{}, &questions.Question{})
+	db.AutoMigrate(&users.User{}, &questions.Question{}, &answers.Answer{})
 
 	// Initialize gin engine
 	// call it "r" as router.

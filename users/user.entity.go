@@ -1,6 +1,7 @@
 package users
 
 import (
+	"http-api/answers"
 	"http-api/questions"
 	"time"
 )
@@ -12,6 +13,7 @@ type User struct {
 	Password  string `gorm:"not null"`
 	Bio       string
 	Questions []questions.Question `gorm:"foreignKey:AuthorID"`
+	Answers   []answers.Answer     `gorm:"foreignKey:AuthorID"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
