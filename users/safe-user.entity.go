@@ -8,7 +8,6 @@ import (
 type SafeUser struct {
 	ID        int64
 	Username  string
-	Email     string
 	Bio       string
 	Tasks     []tasks.Task `gorm:"foreignKey:AuthorID"`
 	CreatedAt time.Time
