@@ -41,7 +41,7 @@ func (rep *repository) FindByUsername(username string) (SafeUser, error) {
 	// Find the first match user by username.
 	// Omit the password as it is used as a public endpoint.
 	// Smart query := https://gorm.io/docs/advanced_query.html#Smart-Select-Fields
-	err := rep.db.Model(&User{}).Preload("Tasks").First(&result, User{
+	err := rep.db.Model(&User{}).First(&result, User{
 		Username: username,
 	}).Error
 
