@@ -2,7 +2,7 @@ package auth
 
 import (
 	"fmt"
-	"http-api/users"
+	"http-api/services"
 	"net/http"
 	"time"
 
@@ -16,10 +16,10 @@ type ILoginController interface {
 
 type loginController struct {
 	loginService ILoginService
-	usersService users.IUserService
+	usersService services.IUserService
 }
 
-func LoginController(loginService ILoginService, usersService users.IUserService) *loginController {
+func LoginController(loginService ILoginService, usersService services.IUserService) *loginController {
 	return &loginController{
 		loginService: loginService,
 		usersService: usersService,

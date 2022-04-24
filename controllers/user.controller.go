@@ -1,6 +1,7 @@
-package users
+package controllers
 
 import (
+	"http-api/services"
 	"net/http"
 	"time"
 
@@ -8,10 +9,10 @@ import (
 )
 
 type userCtrl struct {
-	userService IUserService
+	userService services.IUserService
 }
 
-func UserCtrl(userService IUserService) *userCtrl {
+func UserCtrl(userService services.IUserService) *userCtrl {
 	return &userCtrl{userService}
 }
 

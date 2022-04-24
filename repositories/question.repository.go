@@ -11,21 +11,21 @@ type IQuestionRepository interface {
 	Create(question entities.Question) error
 }
 
-type repository struct {
+type questionrepository struct {
 	db *gorm.DB
 }
 
-func QuestionRepository(db *gorm.DB) *repository {
-	return &repository{db}
+func QuestionRepository(db *gorm.DB) *questionrepository {
+	return &questionrepository{db}
 }
 
-func (rep *repository) FindAll() ([]entities.Question, error) {
+func (rep *questionrepository) FindAll() ([]entities.Question, error) {
 	var result []entities.Question
 	err := rep.db.Find(&result).Error
 	return result, err
 }
 
-func (rep *repository) Create(question entities.Question) error {
+func (rep *questionrepository) Create(question entities.Question) error {
 	err := rep.db.Create(&question).Save(&question).Error
 	return err
 }

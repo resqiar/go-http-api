@@ -1,7 +1,9 @@
 package auth
 
 import (
-	"http-api/users"
+	"http-api/entities"
+	"http-api/repositories"
+	"http-api/services"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -12,11 +14,11 @@ type ILoginService interface {
 }
 
 type service struct {
-	service    users.IUserService
-	repository users.IUserRepository
+	service    services.IUserService
+	repository repositories.IUserRepository
 }
 
-func LoginService(s users.IUserService, r users.IUserRepository) *service {
+func LoginService(s services.IUserService, r repositories.IUserRepository) *service {
 	return &service{s, r}
 }
 
@@ -47,7 +49,7 @@ func (s *service) HandleRegister(userInput RegisterInput) error {
 	}
 
 	// Bind input into user obj
-	u := users.User{
+	u := entities.User{
 		Username: userInput.Username,
 		Email:    userInput.Email,
 		Password: string(pwHash),

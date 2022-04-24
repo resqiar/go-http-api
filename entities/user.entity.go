@@ -1,8 +1,7 @@
-package users
+package entities
 
 import (
 	"http-api/answers"
-	"http-api/entities"
 	"time"
 )
 
@@ -12,8 +11,8 @@ type User struct {
 	Email     string `gorm:"type:varchar(100); unique; not null"`
 	Password  string `gorm:"not null"`
 	Bio       string
-	Questions []entities.Question `gorm:"foreignKey:AuthorID"`
-	Answers   []answers.Answer    `gorm:"foreignKey:AuthorID"`
+	Questions []Question       `gorm:"foreignKey:AuthorID"`
+	Answers   []answers.Answer `gorm:"foreignKey:AuthorID"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

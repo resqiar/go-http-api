@@ -8,7 +8,6 @@ import (
 	"http-api/guards"
 	"http-api/repositories"
 	"http-api/services"
-	"http-api/users"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -35,7 +34,7 @@ func main() {
 
 	// Auto migration by Gorm.
 	// Must be off when it comes to production.
-	db.AutoMigrate(&users.User{}, &entities.Question{}, &answers.Answer{})
+	db.AutoMigrate(&entities.User{}, &entities.Question{}, &answers.Answer{})
 
 	// Initialize gin engine
 	// call it "r" as router.
@@ -51,9 +50,9 @@ func main() {
 	// Although it feels weird and I doubt
 	// this is the correct way to init all of 'em,
 	// but idk the best practice in golang for now and it LGTM.
-	userRep := users.UserRepository(db)
-	userService := users.UserService(userRep)
-	userCtrl := users.UserCtrl(userService)
+	userRep := repositories.UserRepository(db)
+	userService := services.UserService(userRep)
+	userCtrl := controllers.UserCtrl(userService)
 	loginService := auth.LoginService(userService, userRep)
 	loginCtrl := auth.LoginController(loginService, userService)
 	questionRep := repositories.QuestionRepository(db)
