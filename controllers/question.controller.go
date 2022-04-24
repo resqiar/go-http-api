@@ -1,7 +1,9 @@
-package questions
+package controllers
 
 import (
 	"fmt"
+	"http-api/dtos"
+	"http-api/services"
 	"net/http"
 	"time"
 
@@ -10,10 +12,10 @@ import (
 )
 
 type questionController struct {
-	questionService IService
+	questionService services.IQuestionService
 }
 
-func QuestionController(questionService IService) *questionController {
+func QuestionController(questionService services.IQuestionService) *questionController {
 	return &questionController{questionService}
 }
 
@@ -41,7 +43,7 @@ func (ctrl *questionController) HandleCreateQuestion(c *gin.Context) {
 	startTime := time.Now()
 
 	// Question Input DTO
-	var questionInput QuestionInput
+	var questionInput dtos.QuestionInput
 
 	// Validate user input (DTO)
 	bodyErr := c.ShouldBindJSON(&questionInput)

@@ -1,4 +1,4 @@
-package questions
+package dtos
 
 type QuestionInput struct {
 	Title string `json:"title" binding:"required"`

@@ -1,7 +1,7 @@
 package users
 
 import (
-	"http-api/questions"
+	"http-api/entities"
 	"time"
 )
 
@@ -9,7 +9,7 @@ type SafeUser struct {
 	ID        int64
 	Username  string
 	Bio       string
-	Questions []questions.Question `gorm:"foreignKey:AuthorID"`
+	Questions []entities.Question `gorm:"foreignKey:AuthorID"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

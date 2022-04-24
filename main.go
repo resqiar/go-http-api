@@ -3,8 +3,11 @@ package main
 import (
 	"http-api/answers"
 	"http-api/auth"
+	"http-api/controllers"
+	"http-api/entities"
 	"http-api/guards"
-	"http-api/questions"
+	"http-api/repositories"
+	"http-api/services"
 	"http-api/users"
 	"log"
 
@@ -32,7 +35,7 @@ func main() {
 
 	// Auto migration by Gorm.
 	// Must be off when it comes to production.
-	db.AutoMigrate(&users.User{}, &questions.Question{}, &answers.Answer{})
+	db.AutoMigrate(&users.User{}, &entities.Question{}, &answers.Answer{})
 
 	// Initialize gin engine
 	// call it "r" as router.
@@ -53,9 +56,9 @@ func main() {
 	userCtrl := users.UserCtrl(userService)
 	loginService := auth.LoginService(userService, userRep)
 	loginCtrl := auth.LoginController(loginService, userService)
-	questionRep := questions.QuestionRepository(db)
-	questionService := questions.QuestionService(questionRep)
-	questionCtrl := questions.QuestionController(questionService)
+	questionRep := repositories.QuestionRepository(db)
+	questionService := services.QuestionService(questionRep)
+	questionCtrl := controllers.QuestionController(questionService)
 	answerRep := answers.AnswerRepository(db)
 	answerService := answers.AnswerService(answerRep)
 	answerCtrl := answers.AnswerController(answerService)

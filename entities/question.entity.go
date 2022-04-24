@@ -1,4 +1,4 @@
-package questions
+package entities
 
 import (
 	"http-api/answers"
