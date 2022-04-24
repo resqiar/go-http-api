@@ -48,16 +48,25 @@ func main() {
 	// Although it feels weird and I doubt
 	// this is the correct way to init all of 'em,
 	// but idk the best practice in golang for now and it LGTM.
+	// ----------------------------------------------------------------
+	// Initialize repositories
+	// ----------------------------------------------------------------
 	userRep := repositories.UserRepository(db)
-	userService := services.UserService(userRep)
-	userCtrl := controllers.UserCtrl(userService)
-	loginService := services.LoginService(userService, userRep)
-	loginCtrl := controllers.LoginController(loginService, userService)
 	questionRep := repositories.QuestionRepository(db)
-	questionService := services.QuestionService(questionRep)
-	questionCtrl := controllers.QuestionController(questionService)
 	answerRep := repositories.AnswerRepository(db)
+	// ----------------------------------------------------------------
+	// initialize services
+	// ----------------------------------------------------------------
+	userService := services.UserService(userRep)
+	loginService := services.LoginService(userService, userRep)
+	questionService := services.QuestionService(questionRep)
 	answerService := services.AnswerService(answerRep)
+	// ----------------------------------------------------------------
+	// Initialize controllers
+	// ----------------------------------------------------------------
+	userCtrl := controllers.UserCtrl(userService)
+	loginCtrl := controllers.LoginController(loginService, userService)
+	questionCtrl := controllers.QuestionController(questionService)
 	answerCtrl := controllers.AnswerController(answerService)
 
 	// Group routes specifically for authentication
