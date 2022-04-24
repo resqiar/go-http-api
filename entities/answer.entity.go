@@ -1,4 +1,4 @@
-package answers
+package entities
 
 import (
 	"time"

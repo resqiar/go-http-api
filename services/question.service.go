@@ -11,15 +11,15 @@ type IQuestionService interface {
 	Create(questionInput dtos.QuestionInput, authorId int64) error
 }
 
-type questionservice struct {
+type questionService struct {
 	repository repositories.IQuestionRepository
 }
 
-func QuestionService(rep repositories.IQuestionRepository) *questionservice {
-	return &questionservice{rep}
+func QuestionService(rep repositories.IQuestionRepository) *questionService {
+	return &questionService{rep}
 }
 
-func (s *questionservice) FindAll() ([]entities.Question, error) {
+func (s *questionService) FindAll() ([]entities.Question, error) {
 	// Call users service to retrieve all questions
 	result, err := s.repository.FindAll()
 	if err != nil {
@@ -28,7 +28,7 @@ func (s *questionservice) FindAll() ([]entities.Question, error) {
 	return result, err
 }
 
-func (s *questionservice) Create(questionInput dtos.QuestionInput, authorId int64) error {
+func (s *questionService) Create(questionInput dtos.QuestionInput, authorId int64) error {
 	// Bind question input (DTO) into Question obj
 	t := entities.Question{
 		Title:    questionInput.Title,

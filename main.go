@@ -1,7 +1,6 @@
 package main
 
 import (
-	"http-api/answers"
 	"http-api/auth"
 	"http-api/controllers"
 	"http-api/entities"
@@ -34,7 +33,7 @@ func main() {
 
 	// Auto migration by Gorm.
 	// Must be off when it comes to production.
-	db.AutoMigrate(&entities.User{}, &entities.Question{}, &answers.Answer{})
+	db.AutoMigrate(&entities.User{}, &entities.Question{}, &entities.Answer{})
 
 	// Initialize gin engine
 	// call it "r" as router.
@@ -58,9 +57,9 @@ func main() {
 	questionRep := repositories.QuestionRepository(db)
 	questionService := services.QuestionService(questionRep)
 	questionCtrl := controllers.QuestionController(questionService)
-	answerRep := answers.AnswerRepository(db)
-	answerService := answers.AnswerService(answerRep)
-	answerCtrl := answers.AnswerController(answerService)
+	answerRep := repositories.AnswerRepository(db)
+	answerService := services.AnswerService(answerRep)
+	answerCtrl := controllers.AnswerController(answerService)
 
 	// Group routes specifically for authentication
 	// endpoint of the routes will be "v1/auth/..."

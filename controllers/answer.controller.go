@@ -1,7 +1,9 @@
-package answers
+package controllers
 
 import (
 	"fmt"
+	"http-api/dtos"
+	"http-api/services"
 	"net/http"
 	"time"
 
@@ -10,10 +12,10 @@ import (
 )
 
 type answerController struct {
-	answerService IAnswerService
+	answerService services.IAnswerService
 }
 
-func AnswerController(answerService IAnswerService) *answerController {
+func AnswerController(answerService services.IAnswerService) *answerController {
 	return &answerController{answerService}
 }
 
@@ -41,7 +43,7 @@ func (ctrl *answerController) HandleCreateAnswer(c *gin.Context) {
 	startTime := time.Now()
 
 	// Answer Input DTO
-	var answerInput AnswerInput
+	var answerInput dtos.AnswerInput
 
 	// Validate input (DTO)
 	bodyErr := c.ShouldBindJSON(&answerInput)

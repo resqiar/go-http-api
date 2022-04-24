@@ -11,15 +11,15 @@ type IUserService interface {
 	FindByUsername(username string) (entities.SafeUser, error)
 }
 
-type userservice struct {
+type userService struct {
 	repo repositories.IUserRepository
 }
 
-func UserService(repo repositories.IUserRepository) *userservice {
-	return &userservice{repo}
+func UserService(repo repositories.IUserRepository) *userService {
+	return &userService{repo}
 }
 
-func (s *userservice) FindAll() ([]entities.User, error) {
+func (s *userService) FindAll() ([]entities.User, error) {
 	result, err := s.repo.FindAll()
 	if err != nil {
 		return nil, err
@@ -27,13 +27,13 @@ func (s *userservice) FindAll() ([]entities.User, error) {
 	return result, err
 }
 
-func (s *userservice) FindByEmail(email string) (entities.User, error) {
+func (s *userService) FindByEmail(email string) (entities.User, error) {
 	// Call user service to find user based on email
 	result, err := s.repo.FindByEmail(email)
 	return result, err
 }
 
-func (s *userservice) FindByUsername(username string) (entities.SafeUser, error) {
+func (s *userService) FindByUsername(username string) (entities.SafeUser, error) {
 	// Call user service to find user based on username
 	result, err := s.repo.FindByUsername(username)
 	return result, err

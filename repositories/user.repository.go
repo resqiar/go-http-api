@@ -13,15 +13,15 @@ type IUserRepository interface {
 	Create(user entities.User) error
 }
 
-type userrepository struct {
+type userRepository struct {
 	db *gorm.DB
 }
 
-func UserRepository(db *gorm.DB) *userrepository {
-	return &userrepository{db}
+func UserRepository(db *gorm.DB) *userRepository {
+	return &userRepository{db}
 }
 
-func (rep *userrepository) FindAll() ([]entities.User, error) {
+func (rep *userRepository) FindAll() ([]entities.User, error) {
 	var result []entities.User
 
 	// Find all users with its relations ("Questions")
@@ -29,7 +29,7 @@ func (rep *userrepository) FindAll() ([]entities.User, error) {
 	return result, err
 }
 
-func (rep *userrepository) FindByEmail(email string) (entities.User, error) {
+func (rep *userRepository) FindByEmail(email string) (entities.User, error) {
 	var result entities.User
 
 	// Find the first match user by email.
@@ -39,7 +39,7 @@ func (rep *userrepository) FindByEmail(email string) (entities.User, error) {
 	return result, err
 }
 
-func (rep *userrepository) FindByUsername(username string) (entities.SafeUser, error) {
+func (rep *userRepository) FindByUsername(username string) (entities.SafeUser, error) {
 	var result entities.SafeUser
 
 	// Find the first match user by username.
@@ -52,7 +52,7 @@ func (rep *userrepository) FindByUsername(username string) (entities.SafeUser, e
 	return result, err
 }
 
-func (repo *userrepository) Create(user entities.User) error {
+func (repo *userRepository) Create(user entities.User) error {
 	// Create and save to DB
 	err := repo.db.Create(&user).Save(&user).Error
 	return err
