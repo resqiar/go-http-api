@@ -1,7 +1,6 @@
 package main
 
 import (
-	"http-api/auth"
 	"http-api/controllers"
 	"http-api/entities"
 	"http-api/guards"
@@ -52,8 +51,8 @@ func main() {
 	userRep := repositories.UserRepository(db)
 	userService := services.UserService(userRep)
 	userCtrl := controllers.UserCtrl(userService)
-	loginService := auth.LoginService(userService, userRep)
-	loginCtrl := auth.LoginController(loginService, userService)
+	loginService := services.LoginService(userService, userRep)
+	loginCtrl := controllers.LoginController(loginService, userService)
 	questionRep := repositories.QuestionRepository(db)
 	questionService := services.QuestionService(questionRep)
 	questionCtrl := controllers.QuestionController(questionService)

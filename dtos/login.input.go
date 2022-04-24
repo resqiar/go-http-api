@@ -1,4 +1,4 @@
-package auth
+package dtos
 
 type LoginInput struct {
 	Email    string `form:"email"`

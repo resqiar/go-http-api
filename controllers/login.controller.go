@@ -1,7 +1,8 @@
-package auth
+package controllers
 
 import (
 	"fmt"
+	"http-api/dtos"
 	"http-api/services"
 	"net/http"
 	"time"
@@ -15,11 +16,11 @@ type ILoginController interface {
 }
 
 type loginController struct {
-	loginService ILoginService
+	loginService services.ILoginService
 	usersService services.IUserService
 }
 
-func LoginController(loginService ILoginService, usersService services.IUserService) *loginController {
+func LoginController(loginService services.ILoginService, usersService services.IUserService) *loginController {
 	return &loginController{
 		loginService: loginService,
 		usersService: usersService,
@@ -31,7 +32,7 @@ func (ctrl *loginController) Login(c *gin.Context) {
 	startTime := time.Now()
 
 	// Works as a DTO (Data Transfer Object)
-	var creds LoginInput
+	var creds dtos.LoginInput
 
 	// Validate the input according to DTO, return an error.
 	err := c.ShouldBindJSON(&creds)
@@ -54,7 +55,7 @@ func (ctrl *loginController) Login(c *gin.Context) {
 
 	// At this point, user credential is verified,
 	// so generate access token and return back as JSON.
-	accessToken := GenerateToken(id)
+	accessToken := services.GenerateToken(id)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status":       http.StatusOK,
@@ -69,7 +70,7 @@ func (ctrl *loginController) Register(c *gin.Context) {
 	startTime := time.Now()
 
 	// Register DTO
-	var userInput RegisterInput
+	var userInput dtos.RegisterInput
 
 	// Validate the input according to DTO, return an error.
 	bodyErr := c.ShouldBindJSON(&userInput)
@@ -98,7 +99,7 @@ func (ctrl *loginController) Register(c *gin.Context) {
 	}
 
 	// Generate access token
-	accessToken := GenerateToken(created.ID)
+	accessToken := services.GenerateToken(created.ID)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": http.StatusOK,

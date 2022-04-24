@@ -1,4 +1,4 @@
-package auth
+package dtos
 
 type RegisterInput struct {
 	Username string `json:"username" binding:"required"`

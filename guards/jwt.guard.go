@@ -2,7 +2,7 @@ package guards
 
 import (
 	"fmt"
-	"http-api/auth"
+	"http-api/services"
 	"net/http"
 
 	"github.com/dgrijalva/jwt-go"
@@ -30,7 +30,7 @@ func JWTGuard() gin.HandlerFunc {
 		t := authorization[len(BEARER_SCHEMA):]
 
 		// Call Jwt service to veriy if the token valid or not.
-		token, err := auth.Verify(string(t))
+		token, err := services.Verify(string(t))
 		if token.Valid {
 			// If it is valid extract the payload.
 			claims := token.Claims.(jwt.MapClaims)

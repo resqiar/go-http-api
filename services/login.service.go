@@ -1,28 +1,28 @@
-package auth
+package services
 
 import (
+	"http-api/dtos"
 	"http-api/entities"
 	"http-api/repositories"
-	"http-api/services"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
 type ILoginService interface {
 	Login(email string, password string) (int64, bool)
-	HandleRegister(userInput RegisterInput) error
+	HandleRegister(userInput dtos.RegisterInput) error
 }
 
-type service struct {
-	service    services.IUserService
+type loginService struct {
+	service    IUserService
 	repository repositories.IUserRepository
 }
 
-func LoginService(s services.IUserService, r repositories.IUserRepository) *service {
-	return &service{s, r}
+func LoginService(s IUserService, r repositories.IUserRepository) *loginService {
+	return &loginService{s, r}
 }
 
-func (s *service) Login(email string, password string) (int64, bool) {
+func (s *loginService) Login(email string, password string) (int64, bool) {
 	// Call user service to get the user data by email
 	u, err := s.service.FindByEmail(email)
 	if err != nil {
@@ -38,7 +38,7 @@ func (s *service) Login(email string, password string) (int64, bool) {
 	return u.ID, true
 }
 
-func (s *service) HandleRegister(userInput RegisterInput) error {
+func (s *loginService) HandleRegister(userInput dtos.RegisterInput) error {
 	// Hash the user's password input
 	// This is the best practice to save the password into the database,
 	// as if the attacker managed to get access into the database, they still
