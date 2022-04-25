@@ -9,6 +9,7 @@ import (
 type IQuestionService interface {
 	FindAll() ([]entities.Question, error)
 	Create(questionInput dtos.QuestionInput, authorId int64) error
+	FindById(id int64) (entities.Question, error)
 }
 
 type questionService struct {
@@ -39,4 +40,10 @@ func (s *questionService) Create(questionInput dtos.QuestionInput, authorId int6
 	// Call question repository to create a new user and save them to database.
 	err := s.repository.Create(t)
 	return err
+}
+
+func (s *questionService) FindById(id int64) (entities.Question, error) {
+	// Call repo to retrieve specific question
+	result, err := s.repository.FindById(id)
+	return result, err
 }

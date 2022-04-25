@@ -75,15 +75,20 @@ func main() {
 	authRoutes.POST("/login", loginCtrl.Login)
 	authRoutes.POST("/register", loginCtrl.Register)
 
+	// ----------------------------------------------------------------
 	// User routes
+	// ----------------------------------------------------------------
 	v1.GET("/users", userCtrl.HandleReadUsers)
 	v1.GET("/user/:username", userCtrl.HandleFindUserByUsername)
-
+	// ----------------------------------------------------------------
 	// Question routes
+	// ----------------------------------------------------------------
 	v1.GET("/questions", questionCtrl.HandleReadQuestion)
+	v1.GET("/question/:id", questionCtrl.HandleReadDetailQuestion)
 	v1.POST("/question/create", guards.JWTGuard(), questionCtrl.HandleCreateQuestion)
-
+	// ----------------------------------------------------------------
 	// Answer routes
+	// ----------------------------------------------------------------
 	v1.GET("/answers", answerCtrl.HandleReadAnswers)
 	v1.POST("/answer/create", guards.JWTGuard(), answerCtrl.HandleCreateAnswer)
 

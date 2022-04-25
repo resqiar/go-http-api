@@ -5,6 +5,7 @@ import (
 	"http-api/dtos"
 	"http-api/services"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -68,6 +69,40 @@ func (ctrl *questionController) HandleCreateQuestion(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"status":      http.StatusOK,
+		"timestamp":   time.Now(),
+		"response_ms": time.Now().UnixMilli() - startTime.UnixMilli(),
+	})
+}
+
+func (ctrl *questionController) HandleReadDetailQuestion(c *gin.Context) {
+	startTime := time.Now()
+
+	// Get string id from url parameter
+	rawId, exist := c.Params.Get("id")
+	if !exist {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	// convert string to int
+	id, conErr := strconv.ParseInt(rawId, 10, 64)
+	if conErr != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	// Call questions service to retrieve specific questions
+	result, err := ctrl.questionService.FindById(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":      http.StatusOK,
+		"data":        result,
 		"timestamp":   time.Now(),
 		"response_ms": time.Now().UnixMilli() - startTime.UnixMilli(),
 	})
