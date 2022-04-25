@@ -9,6 +9,7 @@ type IUserService interface {
 	FindAll() ([]entities.User, error)
 	FindByEmail(email string) (entities.User, error)
 	FindByUsername(username string) (entities.SafeUser, error)
+	FindById(id int64) (entities.SafeUser, error)
 }
 
 type userService struct {
@@ -36,5 +37,11 @@ func (s *userService) FindByEmail(email string) (entities.User, error) {
 func (s *userService) FindByUsername(username string) (entities.SafeUser, error) {
 	// Call user service to find user based on username
 	result, err := s.repo.FindByUsername(username)
+	return result, err
+}
+
+func (s *userService) FindById(id int64) (entities.SafeUser, error) {
+	// Call user service to find user based on id
+	result, err := s.repo.FindById(id)
 	return result, err
 }

@@ -66,7 +66,7 @@ func main() {
 	// ----------------------------------------------------------------
 	userCtrl := controllers.UserCtrl(userService)
 	loginCtrl := controllers.LoginController(loginService, userService)
-	questionCtrl := controllers.QuestionController(questionService)
+	questionCtrl := controllers.QuestionController(questionService, userService)
 	answerCtrl := controllers.AnswerController(answerService)
 
 	// Group routes specifically for authentication
@@ -86,6 +86,7 @@ func main() {
 	v1.GET("/questions", questionCtrl.HandleReadQuestion)
 	v1.GET("/question/:id", questionCtrl.HandleReadDetailQuestion)
 	v1.POST("/question/create", guards.JWTGuard(), questionCtrl.HandleCreateQuestion)
+	v1.POST("/question/update", guards.JWTGuard(), questionCtrl.HandleUpdateQuestion)
 	// ----------------------------------------------------------------
 	// Answer routes
 	// ----------------------------------------------------------------

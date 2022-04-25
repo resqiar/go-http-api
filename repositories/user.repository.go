@@ -10,6 +10,7 @@ type IUserRepository interface {
 	FindAll() ([]entities.User, error)
 	FindByEmail(email string) (entities.User, error)
 	FindByUsername(username string) (entities.SafeUser, error)
+	FindById(id int64) (entities.SafeUser, error)
 	Create(user entities.User) error
 }
 
@@ -47,6 +48,19 @@ func (rep *userRepository) FindByUsername(username string) (entities.SafeUser, e
 	// Smart query := https://gorm.io/docs/advanced_query.html#Smart-Select-Fields
 	err := rep.db.Model(&entities.User{}).First(&result, entities.User{
 		Username: username,
+	}).Error
+
+	return result, err
+}
+
+func (rep *userRepository) FindById(id int64) (entities.SafeUser, error) {
+	var result entities.SafeUser
+
+	// Find the first match user by id.
+	// Omit the password as it is used as a public endpoint.
+	// Smart query := https://gorm.io/docs/advanced_query.html#Smart-Select-Fields
+	err := rep.db.Model(&entities.User{}).First(&result, entities.User{
+		ID: id,
 	}).Error
 
 	return result, err

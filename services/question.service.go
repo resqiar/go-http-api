@@ -8,8 +8,9 @@ import (
 
 type IQuestionService interface {
 	FindAll() ([]entities.Question, error)
-	Create(questionInput dtos.QuestionInput, authorId int64) error
 	FindById(id int64) (entities.Question, error)
+	Create(questionInput dtos.QuestionInput, authorId int64) error
+	UpdateQuestion(updateInput dtos.UpdateQuestionInput) error
 }
 
 type questionService struct {
@@ -46,4 +47,9 @@ func (s *questionService) FindById(id int64) (entities.Question, error) {
 	// Call repo to retrieve specific question
 	result, err := s.repository.FindById(id)
 	return result, err
+}
+
+func (s *questionService) UpdateQuestion(updateInput dtos.UpdateQuestionInput) error {
+	err := s.repository.Update(int64(updateInput.ID), updateInput)
+	return err
 }

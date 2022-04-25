@@ -14,10 +14,11 @@ import (
 
 type questionController struct {
 	questionService services.IQuestionService
+	userService     services.IUserService
 }
 
-func QuestionController(questionService services.IQuestionService) *questionController {
-	return &questionController{questionService}
+func QuestionController(questionService services.IQuestionService, userService services.IUserService) *questionController {
+	return &questionController{questionService: questionService, userService: userService}
 }
 
 func (ctrl *questionController) HandleReadQuestion(c *gin.Context) {
@@ -103,6 +104,54 @@ func (ctrl *questionController) HandleReadDetailQuestion(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":      http.StatusOK,
 		"data":        result,
+		"timestamp":   time.Now(),
+		"response_ms": time.Now().UnixMilli() - startTime.UnixMilli(),
+	})
+}
+
+func (ctrl *questionController) HandleUpdateQuestion(c *gin.Context) {
+	startTime := time.Now()
+
+	// Update Question Input DTO
+	var updateInput dtos.UpdateQuestionInput
+
+	// Validate user input (DTO)
+	bodyErr := c.ShouldBindJSON(&updateInput)
+	if bodyErr != nil {
+		errorMessage := []string{}
+		for _, e := range bodyErr.(validator.ValidationErrors) {
+			errorMessage = append(errorMessage, fmt.Sprintf("Error on field %s, reason %s", e.Field(), e.ActualTag()))
+		}
+		c.JSON(http.StatusBadRequest, gin.H{"code": http.StatusBadRequest, "message": errorMessage})
+		return
+	}
+
+	// Get author id from JWT Guard context
+	authorId, _ := c.Get("user_id")
+
+	// Get target question
+	targetQuestion, questionErr := ctrl.questionService.FindById(int64(updateInput.ID))
+	targetAuthor, authorErr := ctrl.userService.FindById(int64(authorId.(float64)))
+	if questionErr != nil || authorErr != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	// Make sure the one who update the data is the author
+	if targetQuestion.AuthorID != targetAuthor.ID {
+		c.AbortWithStatus(401)
+		return
+	}
+
+	// Call questions service to update question
+	resultErr := ctrl.questionService.UpdateQuestion(updateInput)
+	if resultErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"code": http.StatusBadRequest, "message": resultErr.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":      http.StatusOK,
 		"timestamp":   time.Now(),
 		"response_ms": time.Now().UnixMilli() - startTime.UnixMilli(),
 	})

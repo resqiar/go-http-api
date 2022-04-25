@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"http-api/dtos"
 	"http-api/entities"
 
 	"gorm.io/gorm"
@@ -10,6 +11,7 @@ type IQuestionRepository interface {
 	FindAll() ([]entities.Question, error)
 	FindById(id int64) (entities.Question, error)
 	Create(question entities.Question) error
+	Update(id int64, updateInput dtos.UpdateQuestionInput) error
 }
 
 type questionRepository struct {
@@ -37,4 +39,10 @@ func (rep *questionRepository) FindById(id int64) (entities.Question, error) {
 		ID: id,
 	}).Error
 	return result, err
+}
+
+func (rep *questionRepository) Update(id int64, updateInput dtos.UpdateQuestionInput) error {
+	// Update the value according to the id and the input fields
+	err := rep.db.Model(&entities.Question{}).Where("ID = ?", id).Omit("ID").Updates(updateInput).Error
+	return err
 }
