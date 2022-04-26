@@ -34,9 +34,7 @@ func (rep *userRepository) FindByEmail(email string) (entities.User, error) {
 	var result entities.User
 
 	// Find the first match user by email.
-	err := rep.db.First(&result, entities.User{
-		Email: email,
-	}).Error
+	err := rep.db.Where("email = ?", email).First(&result).Error
 	return result, err
 }
 

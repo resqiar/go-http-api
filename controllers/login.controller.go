@@ -43,6 +43,15 @@ func (ctrl *loginController) Login(c *gin.Context) {
 		return
 	}
 
+	exist, existErr := ctrl.usersService.FindByEmail(creds.Email)
+	fmt.Println(exist, creds.Email)
+	if existErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "no corresponding user with the given email",
+		})
+		return
+	}
+
 	// Call service to login, passing user's email and password
 	// service will return bool if valid or invalid.
 	id, isValid := ctrl.loginService.Login(creds.Email, creds.Password)
