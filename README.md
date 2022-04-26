@@ -154,7 +154,18 @@ This API return all instance of questions inside of the database table.
 
 ```json
 {
-  "data": []Question,
+  "data": [
+    {
+      "ID": number,
+      "Title": string,
+      "Desc": string,
+      "AuthorID": 1,
+      "Answers": []Answer,
+      "CreatedAt": string,
+      "UpdatedAt": string,
+      "Deleted": string || null,
+    },
+  ],
   "response_ms": number,
   "status": number,
   "timestamp": string
