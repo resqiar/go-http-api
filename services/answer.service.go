@@ -8,7 +8,10 @@ import (
 
 type IAnswerService interface {
 	FindAll() ([]entities.Answer, error)
+	FindById(id int64) (entities.Answer, error)
 	Create(answerInput dtos.AnswerInput, authorId int64) error
+	UpdateAnswer(updateInput dtos.UpdateAnswerInput) error
+	SoftDeleteAnswer(deleteInput dtos.DeleteAnswerInput) error
 }
 
 type answerService struct {
@@ -38,5 +41,22 @@ func (s *answerService) Create(answerInput dtos.AnswerInput, authorId int64) err
 
 	// Call answer repository to create a new answer and save them to database.
 	err := s.repository.Create(t)
+	return err
+}
+
+func (s *answerService) FindById(id int64) (entities.Answer, error) {
+	// Call repo to retrieve specific answer
+	result, err := s.repository.FindById(id)
+	return result, err
+}
+
+func (s *answerService) UpdateAnswer(updateInput dtos.UpdateAnswerInput) error {
+	err := s.repository.Update(int64(updateInput.ID), updateInput)
+	return err
+}
+
+func (s *answerService) SoftDeleteAnswer(deleteInput dtos.DeleteAnswerInput) error {
+	// Call repo to SOFT DELETE the given id
+	err := s.repository.Delete(int64(deleteInput.ID))
 	return err
 }

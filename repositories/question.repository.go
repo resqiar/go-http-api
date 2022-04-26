@@ -25,7 +25,7 @@ func QuestionRepository(db *gorm.DB) *questionRepository {
 
 func (rep *questionRepository) FindAll() ([]entities.Question, error) {
 	var result []entities.Question
-	err := rep.db.Find(&result).Error
+	err := rep.db.Preload("Answers").Find(&result).Error
 	return result, err
 }
 
