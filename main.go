@@ -8,6 +8,7 @@ import (
 	"http-api/services"
 	"log"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
@@ -37,6 +38,11 @@ func main() {
 	// Initialize gin engine
 	// call it "r" as router.
 	r := gin.Default()
+	// same as
+	// config := cors.DefaultConfig()
+	// config.AllowAllOrigins = true
+	// router.Use(cors.New(config))
+	r.Use(cors.Default())
 
 	// Group all routes to have a prefix v1.
 	// This is useful to maintan backward compatibility
