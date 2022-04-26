@@ -272,3 +272,154 @@ This API will SOFT DELETE existing question based on the input.
   "timestamp": string
 }
 ```
+
+## Answer API
+
+The Answer API is used as a front-end communication bridge to the answer table, please be aware of the expected path and request body input.
+
+### Create
+
+This API will create a new question based on the input.
+
+> THIS API IS PROTECTED, YOU CAN ONLY ACCESS IT BY PROVIDING BEARER TOKEN
+
+#### Path
+
+```
+    /v1/answer/create
+```
+
+#### Method
+
+```
+    POST
+```
+
+#### Expected Body
+
+```json
+{
+  "answer": string, // required
+  "question_id": number // required
+}
+```
+
+#### Return value
+
+```json
+{
+  "response_ms": number,
+  "status": number,
+  "timestamp": string
+}
+```
+
+### Read All
+
+This API return all instance of answers inside of the database table.
+
+#### Path
+
+```
+    /v1/answers
+```
+
+#### Method
+
+```
+    GET
+```
+
+#### Return value
+
+```json
+{
+  "data": [
+    {
+      "ID": number,
+      "AnswerText": string,
+      "AuthorID": number,
+      "QuestionID": number,
+      "CreatedAt": string,
+      "UpdatedAt": string,
+      "Deleted": string || null
+    }
+  ],
+  "response_ms": number,
+  "status": number,
+  "timestamp": string
+}
+```
+
+### Update
+
+This API will update existing answer based on the input.
+
+> THIS API IS PROTECTED, YOU CAN ONLY ACCESS IT BY PROVIDING BEARER TOKEN
+
+#### Path
+
+```
+    /v1/answer/update
+```
+
+#### Method
+
+```
+    POST
+```
+
+#### Expected Body
+
+```json
+{
+  "id": number, // required
+  "answer": string,
+}
+```
+
+#### Return value
+
+```json
+{
+  "response_ms": number,
+  "status": number,
+  "timestamp": string
+}
+```
+
+### Delete
+
+This API will SOFT DELETE existing answer based on the input.
+
+> THIS API IS PROTECTED, YOU CAN ONLY ACCESS IT BY PROVIDING BEARER TOKEN
+
+#### Path
+
+```
+    /v1/answer/delete
+```
+
+#### Method
+
+```
+    POST
+```
+
+#### Expected Body
+
+```json
+{
+  "id": number, // required
+}
+```
+
+#### Return value
+
+```json
+{
+  "response_ms": number,
+  "status": number,
+  "timestamp": string
+}
+```
