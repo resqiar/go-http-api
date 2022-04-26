@@ -95,6 +95,7 @@ func main() {
 	v1.GET("/question/:id", questionCtrl.HandleReadDetailQuestion)
 	v1.POST("/question/create", guards.JWTGuard(), questionCtrl.HandleCreateQuestion)
 	v1.POST("/question/update", guards.JWTGuard(), questionCtrl.HandleUpdateQuestion)
+	v1.POST("/question/delete", guards.JWTGuard(), questionCtrl.HandleDeleteQuestion)
 	// ----------------------------------------------------------------
 	// Answer routes
 	// ----------------------------------------------------------------

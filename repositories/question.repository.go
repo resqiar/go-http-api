@@ -12,6 +12,7 @@ type IQuestionRepository interface {
 	FindById(id int64) (entities.Question, error)
 	Create(question entities.Question) error
 	Update(id int64, updateInput dtos.UpdateQuestionInput) error
+	Delete(id int64) error
 }
 
 type questionRepository struct {
@@ -44,5 +45,13 @@ func (rep *questionRepository) FindById(id int64) (entities.Question, error) {
 func (rep *questionRepository) Update(id int64, updateInput dtos.UpdateQuestionInput) error {
 	// Update the value according to the id and the input fields
 	err := rep.db.Model(&entities.Question{}).Where("ID = ?", id).Omit("ID").Updates(updateInput).Error
+	return err
+}
+
+func (rep *questionRepository) Delete(id int64) error {
+	// SOFT DELETE the value according to the id
+	err := rep.db.Delete(&entities.Question{
+		ID: id,
+	}).Error
 	return err
 }

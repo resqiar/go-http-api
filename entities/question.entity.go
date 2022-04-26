@@ -2,6 +2,8 @@ package entities
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Question struct {
@@ -12,4 +14,5 @@ type Question struct {
 	Answers   []Answer `gorm:"foreignKey:QuestionID"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
+	Deleted   gorm.DeletedAt
 }

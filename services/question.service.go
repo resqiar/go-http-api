@@ -11,6 +11,7 @@ type IQuestionService interface {
 	FindById(id int64) (entities.Question, error)
 	Create(questionInput dtos.QuestionInput, authorId int64) error
 	UpdateQuestion(updateInput dtos.UpdateQuestionInput) error
+	SoftDeleteQuestion(deleteInput dtos.DeleteQuestionInput) error
 }
 
 type questionService struct {
@@ -51,5 +52,11 @@ func (s *questionService) FindById(id int64) (entities.Question, error) {
 
 func (s *questionService) UpdateQuestion(updateInput dtos.UpdateQuestionInput) error {
 	err := s.repository.Update(int64(updateInput.ID), updateInput)
+	return err
+}
+
+func (s *questionService) SoftDeleteQuestion(deleteInput dtos.DeleteQuestionInput) error {
+	// Call repo to SOFT DELETE the given id
+	err := s.repository.Delete(int64(deleteInput.ID))
 	return err
 }
