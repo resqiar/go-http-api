@@ -2,6 +2,8 @@ package entities
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Answer struct {
@@ -11,4 +13,5 @@ type Answer struct {
 	QuestionID int64
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
+	Deleted    gorm.DeletedAt
 }
