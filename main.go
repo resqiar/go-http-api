@@ -84,7 +84,9 @@ func main() {
 	// ----------------------------------------------------------------
 	// User routes
 	// ----------------------------------------------------------------
+	// ! MAKE SURE YOUR CODE REVIEWERs DONT SEE THIS ENDPOINT !
 	v1.GET("/users", userCtrl.HandleReadUsers)
+	// ! ---------------------------------------------------- !
 	v1.GET("/user/:username", userCtrl.HandleFindUserByUsername)
 	// ----------------------------------------------------------------
 	// Question routes
