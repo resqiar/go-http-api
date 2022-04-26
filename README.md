@@ -7,7 +7,11 @@ This is an example of a simple Golang HTTP API that I used to get to know more a
 # Table of Contents
 
 - [What's this?](#what-s-this-)
+- [Table of Contents](#table-of-contents)
 - [Exposed API Endpoints](#exposed-api-endpoints)
+  - [Authentication API](#authentication-api)
+    - [Login](#login)
+    - [Register](#register)
   - [Question API](#question-api)
     - [Create](#create)
     - [Read All](#read-all)
@@ -18,6 +22,76 @@ This is an example of a simple Golang HTTP API that I used to get to know more a
 # Exposed API Endpoints
 
 Below are all the exposed endpoint for the APIs.
+
+## Authentication API
+
+The authentication endpoint is used to authenticate the API access for cetain user.
+
+### Login
+
+This API will match input (username and password) with the existing user.
+
+#### Path
+
+```
+    /v1/auth/login
+```
+
+#### Method
+
+```
+    POST
+```
+
+#### Expected Body
+
+```json
+{
+  "email": string, // required
+  "password": string // required
+}
+```
+
+### Register
+
+This API will register and create a new instance of user with the given email and password.
+
+#### Path
+
+```
+    /v1/auth/register
+```
+
+#### Method
+
+```
+    POST
+```
+
+#### Expected Body
+
+```json
+{
+  "username": string, // required
+  "email": string, // required
+  "password": string // required
+}
+```
+
+#### Return value
+
+```json
+{
+  "data": {
+    "access_token": string,
+    "email": string,
+    "username": string,
+  },
+  "response_ms": number,
+  "status": number,
+  "timestamp": string
+}
+```
 
 ## Question API
 
