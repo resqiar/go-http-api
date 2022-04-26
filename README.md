@@ -18,6 +18,11 @@ This is an example of a simple Golang HTTP API that I used to get to know more a
     - [Read By ID](#read-by-id)
     - [Update](#update)
     - [Delete](#delete)
+  - [Answer API](#answer-api)
+    - [Create](#create-1)
+    - [Read All](#read-all-1)
+    - [Update](#update-1)
+    - [Delete](#delete-1)
 
 # Exposed API Endpoints
 
