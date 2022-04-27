@@ -36,7 +36,7 @@ func (rep *questionRepository) Create(question entities.Question) error {
 
 func (rep *questionRepository) FindById(id int64) (entities.Question, error) {
 	var result entities.Question
-	err := rep.db.First(&result, entities.Question{
+	err := rep.db.Preload("Answers").First(&result, entities.Question{
 		ID: id,
 	}).Error
 	return result, err

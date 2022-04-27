@@ -57,9 +57,7 @@ func (rep *userRepository) FindById(id int64) (entities.SafeUser, error) {
 	// Find the first match user by id.
 	// Omit the password as it is used as a public endpoint.
 	// Smart query := https://gorm.io/docs/advanced_query.html#Smart-Select-Fields
-	err := rep.db.Model(&entities.User{}).First(&result, entities.User{
-		ID: id,
-	}).Error
+	err := rep.db.Model(&entities.User{}).Where("ID = ?", id).First(&result).Error
 
 	return result, err
 }

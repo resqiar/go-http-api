@@ -62,7 +62,7 @@ func (ctrl *answerController) HandleCreateAnswer(c *gin.Context) {
 	authorId, _ := c.Get("user_id")
 
 	// Verify target question
-	_, questionErr := ctrl.answerService.FindById(int64(answerInput.QuestionID))
+	_, questionErr := ctrl.questionService.FindById(int64(answerInput.QuestionID))
 	if questionErr != nil {
 		c.AbortWithStatus(400)
 		return

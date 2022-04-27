@@ -37,13 +37,20 @@ func main() {
 
 	// Initialize gin engine
 	// call it "r" as router.
-	r := gin.Default()
-	// same as
-	// config := cors.DefaultConfig()
-	// config.AllowAllOrigins = true
-	// router.Use(cors.New(config))
-	r.Use(cors.Default())
-
+	r := gin.New()
+	// Add recovery middleware
+	// prevent error crash the app
+	r.Use(gin.Recovery())
+	// configure cors
+	// cors should allow all origin (Public)
+	// cors should allow only GET and POST
+	// corst should allow "Authorization" header
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
+	corsConfig.AllowAllOrigins = true
+	corsConfig.AllowCredentials = true
+	corsConfig.AllowMethods = []string{"GET", "POST"}
+	r.Use(cors.New(corsConfig))
 	// Group all routes to have a prefix v1.
 	// This is useful to maintan backward compatibility
 	// when the API get updated in the future.
@@ -88,6 +95,7 @@ func main() {
 	v1.GET("/users", userCtrl.HandleReadUsers)
 	// ! ---------------------------------------------------- !
 	v1.GET("/user/:username", userCtrl.HandleFindUserByUsername)
+	v1.GET("/userid/:id", userCtrl.HandleFindUserById)
 	// ----------------------------------------------------------------
 	// Question routes
 	// ----------------------------------------------------------------
@@ -104,5 +112,5 @@ func main() {
 	v1.POST("/answer/update", guards.JWTGuard(), answerCtrl.HandleUpdateAnswer)
 	v1.POST("/answer/delete", guards.JWTGuard(), answerCtrl.HandleDeleteAnswer)
 
-	r.Run() // run on port 8080 by default
+	r.Run(":8000") // run on port 8080 by default
 }
