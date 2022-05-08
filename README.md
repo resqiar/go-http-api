@@ -19,6 +19,7 @@ This is an example of a simple Golang HTTP API that I used to get to know more a
     - [Create](#create)
     - [Read All](#read-all)
     - [Read By ID](#read-by-id)
+    - [Search](#search)
     - [Update](#update)
     - [Delete](#delete)
   - [Answer API](#answer-api)
@@ -309,6 +310,33 @@ This API return the specific question based on the provided ID.
 
 ```
     /v1/question/:id
+```
+
+#### Method
+
+```
+    GET
+```
+
+#### Return value
+
+```json
+{
+  "data": Question,
+  "response_ms": number,
+  "status": number,
+  "timestamp": string
+}
+```
+
+### Search
+
+This API return all instance of questions that match with search query.
+
+#### Path
+
+```
+    /v1/question/search?query=
 ```
 
 #### Method
