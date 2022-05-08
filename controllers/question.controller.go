@@ -109,6 +109,32 @@ func (ctrl *questionController) HandleReadDetailQuestion(c *gin.Context) {
 	})
 }
 
+func (ctrl *questionController) HandleSearchQuestion(c *gin.Context) {
+	startTime := time.Now()
+
+	// Get string from url parameter
+	txt, exist := c.GetQuery("query")
+	if !exist {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	result, err := ctrl.questionService.Search(txt)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":      http.StatusOK,
+		"data":        result,
+		"timestamp":   time.Now(),
+		"response_ms": time.Now().UnixMilli() - startTime.UnixMilli(),
+	})
+}
+
 func (ctrl *questionController) HandleUpdateQuestion(c *gin.Context) {
 	startTime := time.Now()
 

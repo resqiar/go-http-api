@@ -10,6 +10,7 @@ import (
 type IQuestionRepository interface {
 	FindAll() ([]entities.Question, error)
 	FindById(id int64) (entities.Question, error)
+	Search(txt string) (entities.Question, error)
 	Create(question entities.Question) error
 	Update(id int64, updateInput dtos.UpdateQuestionInput) error
 	Delete(id int64) error
@@ -39,6 +40,13 @@ func (rep *questionRepository) FindById(id int64) (entities.Question, error) {
 	err := rep.db.Preload("Answers").First(&result, entities.Question{
 		ID: id,
 	}).Error
+	return result, err
+}
+
+func (rep *questionRepository) Search(txt string) (entities.Question, error) {
+	var result entities.Question
+	conditions := "%" + txt + "%"
+	err := rep.db.Where("title LIKE ?", conditions).Preload("Answers").Find(&result).Error
 	return result, err
 }
 

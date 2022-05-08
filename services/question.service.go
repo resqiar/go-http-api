@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"http-api/dtos"
 	"http-api/entities"
 	"http-api/repositories"
@@ -9,6 +10,7 @@ import (
 type IQuestionService interface {
 	FindAll() ([]entities.Question, error)
 	FindById(id int64) (entities.Question, error)
+	Search(txt string) (entities.Question, error)
 	Create(questionInput dtos.QuestionInput, authorId int64) error
 	UpdateQuestion(updateInput dtos.UpdateQuestionInput) error
 	SoftDeleteQuestion(deleteInput dtos.DeleteQuestionInput) error
@@ -47,6 +49,12 @@ func (s *questionService) Create(questionInput dtos.QuestionInput, authorId int6
 func (s *questionService) FindById(id int64) (entities.Question, error) {
 	// Call repo to retrieve specific question
 	result, err := s.repository.FindById(id)
+	return result, err
+}
+
+func (s *questionService) Search(txt string) (entities.Question, error) {
+	result, err := s.repository.Search(txt)
+	fmt.Println(result)
 	return result, err
 }
 
