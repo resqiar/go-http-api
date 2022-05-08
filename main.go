@@ -113,5 +113,5 @@ func main() {
 	v1.POST("/answer/update", guards.JWTGuard(), answerCtrl.HandleUpdateAnswer)
 	v1.POST("/answer/delete", guards.JWTGuard(), answerCtrl.HandleDeleteAnswer)
 
-	r.Run(":8000") // run on port 8080 by default
+	r.Run(":8080") // run on port 8080 by default
 }

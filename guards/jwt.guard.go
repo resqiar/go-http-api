@@ -1,7 +1,6 @@
 package guards
 
 import (
-	"fmt"
 	"http-api/services"
 	"net/http"
 
@@ -39,7 +38,6 @@ func JWTGuard() gin.HandlerFunc {
 			c.Set("user_id", claims["id"])
 		} else {
 			// If not valid, abort with status code 401
-			fmt.Println(err)
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 	}
