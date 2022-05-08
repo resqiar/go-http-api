@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"http-api/dtos"
 	"http-api/entities"
 	"http-api/repositories"
@@ -54,7 +53,6 @@ func (s *questionService) FindById(id int64) (entities.Question, error) {
 
 func (s *questionService) Search(txt string) (entities.Question, error) {
 	result, err := s.repository.Search(txt)
-	fmt.Println(result)
 	return result, err
 }
 
