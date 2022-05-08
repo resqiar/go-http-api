@@ -11,6 +11,10 @@ This is an example of a simple Golang HTTP API that I used to get to know more a
   - [Authentication API](#authentication-api)
     - [Login](#login)
     - [Register](#register)
+  - [Users API](#users-api)
+    - [Find User by Username](#find-user-by-username)
+    - [Find User by ID](#find-user-by-id)
+    - [Get All Users (TEST PURPOSE ONLY)](#get-all-users--test-purpose-only-)
   - [Question API](#question-api)
     - [Create](#create)
     - [Read All](#read-all)
@@ -103,6 +107,115 @@ This API will register and create a new instance of user with the given email an
     "email": string,
     "username": string,
   },
+  "response_ms": number,
+  "status": number,
+  "timestamp": string
+}
+```
+
+## Users API
+
+### Find User by Username
+
+This API query an instance of user with the given username.
+
+#### Path
+
+```
+    /v1/user/:username
+```
+
+#### Method
+
+```
+    GET
+```
+
+#### Return value
+
+```json
+{
+  "data": {
+    "ID": number,
+    "Username": string,
+    "Bio": string,
+    "Questions": []Question,
+    "CreatedAt": string,
+    "UpdatedAt": string,
+  },
+  "response_ms": number,
+  "status": number,
+  "timestamp": string
+}
+```
+
+### Find User by ID
+
+This API query an instance of user with the given user ID.
+
+#### Path
+
+```
+    /v1/userid/:id
+```
+
+#### Method
+
+```
+    GET
+```
+
+#### Return value
+
+```json
+{
+  "data": {
+    "ID": number,
+    "Username": string,
+    "Bio": string,
+    "Questions": []Question,
+    "CreatedAt": string,
+    "UpdatedAt": string,
+  },
+  "response_ms": number,
+  "status": number,
+  "timestamp": string
+}
+```
+
+### Get All Users (TEST PURPOSE ONLY)
+
+This API query all instances of users from the database.
+
+**IMPORTANT NOTE: YOU MUST NOT EXPOSE THIS API TO PRODUCTION OR YOU WILL GET A TROUBLE.**
+
+#### Path
+
+```
+    /v1/users
+```
+
+#### Method
+
+```
+    GET
+```
+
+#### Return value
+
+```json
+{
+  "data": [
+    {
+      "ID": number,
+      "Username": string,
+      "Bio": string,
+      "Questions": []Question,
+      "CreatedAt": string,
+      "UpdatedAt": string,
+    },
+    {...}
+  ],
   "response_ms": number,
   "status": number,
   "timestamp": string
